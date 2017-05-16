@@ -15,6 +15,7 @@ from __future__ import print_function
 
 import logging
 import sys
+import urllib
 
 from docopt import docopt
 
@@ -30,11 +31,19 @@ logging.basicConfig(format='%(asctime)s %(levelname)s (%(name)s): %(message)s',
 logger = logging.getLogger('chains')
 
 
-def  successor(pid=None):
-    return None
+def  successor(pid=None, mn_client=None):
+    sysmeta = mn_client.getSystemMetadata(pid=pid)
+    if sysmeta.obsoletedBy is not None:
+        return sysmeta.obsoletedBy.value()
+    else:
+        return None
 
-def predecessor(pid=None):
-    return None
+def predecessor(pid=None, mn_client=None):
+    sysmeta = mn_client.getSystemMetadata(pid=pid)
+    if sysmeta.obsoletes is not None:
+        return sysmeta.obsoletes.value()
+    else:
+        return None
 
 
 def main(argv):
@@ -52,7 +61,7 @@ def main(argv):
         -h --help   This page
         -n --node   Target node (either member or coordinating)
         -c --cert   Client certificate
-        -k --key    
+        -k --key    Client certificate key
 
     """
 
@@ -73,27 +82,27 @@ def main(argv):
     else:
         cert_key_path = properties.CERT_KEY
 
-    mn_client = MemberNodeClient_2_0(base_url=properties.BASE_URL,
-                                     cert_pem_path=properties.CERT_PEM,
-                                     cert_key_path=properties.CERT_KEY,
+    mn_client = MemberNodeClient_2_0(base_url=base_url,
+                                     cert_pem_path=cert_pem_path,
+                                     cert_key_path=cert_key_path,
                                      verify_tls=properties.VERIFY_TLS,
                                      )
 
-    sysmeta = None
-    try:
-        sysmeta = mn_client.getSystemMetadata(pid=pid)
-    except Exception as e:
-        logger.error(e)
+    # Find oldest pid
+    current_pid = None
+    while pid is not None:
+        current_pid = pid
+        pid = predecessor(pid, mn_client)
+    pid = current_pid
 
-    if sysmeta is not None:
-        obsoletes = None
-        obsoletedBy = None
-        if sysmeta.obsoletes is not None:
-            obsoletes = sysmeta.obsoletes.value()
-        if sysmeta.obsoletedBy is not None:
-            obsoletedBy = sysmeta.obsoletedBy.value()
-        print('obsoletes: {obs}'.format(obs=obsoletes))
-        print('obsoleted by: {obs_by}'.format(obs_by=obsoletedBy))
+    # Walk obsolescence chain from oldest pid to newest pid
+    pids = []
+    while pid is not None:
+        pids.append(pid)
+        pid = successor(pid, mn_client)
+
+    for pid in pids:
+        print(pid)
 
     return 0
 
