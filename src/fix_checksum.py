@@ -34,9 +34,10 @@ def main():
                                      verify_tls=properties.VERIFY_TLS,
                                      )
 
-    with open('/home/servilla/tmp/metadataChecksumRepair.txt') as f:
+    with open('some_list_of_pids_file_goes_here') as f:
         lines = f.readlines()
-    lines = [_.strip() for _ in lines]
+
+    lines = [_.strip() for _ in lines] # Remove leading/trailing whitespace
 
     for line in lines:
         line = line.split('|')
