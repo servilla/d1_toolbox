@@ -25,19 +25,18 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 from d1_client.mnclient_2_0 import MemberNodeClient_2_0
-from d1_client.objectlistiterator import ObjectListIterator
+from d1_client.iter.objectlist import ObjectListIterator
+import properties
 
 
 def main():
 
-    mn_cert = '/home/servilla/Certs/DataONE/urn_node_mnTestEDI' \
-              '/urn_node_mnTestEDI.crt'
-    mn_key = '/home/servilla/Certs/DataONE/urn_node_mnTestEDI/private' \
-           '/urn_node_mnTestEDI.key'
-    mn_base_url = 'https://gmn-s.edirepository.org/mn'
+    mn_client = MemberNodeClient_2_0(base_url=properties.BASE_URL,
+                                     cert_pem_path=properties.CERT_PEM,
+                                     cert_key_path=properties.CERT_KEY,
+                                     verify_tls=properties.VERIFY_TLS,
+                                     )
 
-    mn_client = MemberNodeClient_2_0(base_url=mn_base_url, cert_path=mn_cert,
-                                     key_path=mn_key)
     objects = ObjectListIterator(client=mn_client)
     cnt = 0
 
