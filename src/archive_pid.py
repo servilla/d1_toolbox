@@ -27,18 +27,18 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 from d1_client.mnclient_2_0 import MemberNodeClient_2_0
-from d1_client.objectlistiterator import ObjectListIterator
+from d1_client.iter.objectlist import ObjectListIterator
+import properties
 
 
 def main():
 
-    mn_cert = '/home/servilla/Certs/DataONE/urn_node_LTER-1/urn_node_LTER-1.crt'
-    mn_key = '/home/servilla/Certs/DataONE/urn_node_LTER-1/private' \
-           '/urn_node_LTER-1.key'
-    mn_base_url = 'https://gmn.lternet.edu/mn'
+    mn_client = MemberNodeClient_2_0(base_url=properties.BASE_URL,
+                                     cert_pem_path=properties.CERT_PEM,
+                                     cert_key_path=properties.CERT_KEY,
+                                     verify_tls=properties.VERIFY_TLS,
+                                     )
 
-    mn_client = MemberNodeClient_2_0(base_url=mn_base_url, cert_path=mn_cert,
-                                     key_path=mn_key)
     objects = ObjectListIterator(client=mn_client)
     cnt = 0
 
