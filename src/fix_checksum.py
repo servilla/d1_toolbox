@@ -19,20 +19,20 @@ import logging
 logging.basicConfig(format='%(asctime)s %(levelname)s (%(name)s): %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S%z', level=logging.INFO)
 
-import d1_client.mnclient_2_0
-
-
 logger = logging.getLogger('fix_checksum')
+
+from d1_client.mnclient_2_0 import MemberNodeClient_2_0
+import properties
+
 
 
 def main():
-    gmn_client = d1_client.mnclient_2_0.MemberNodeClient_2_0(
-        base_url='https://gmn.lternet.edu/mn',
-        cert_path='/home/servilla/Certs/DataONE/urn_node_LTER-1'
-                  '/urn_node_LTER-1.crt',
-        key_path='/home/servilla/Certs/DataONE/urn_node_LTER-1/private'
-                 '/urn_node_LTER-1.key'
-    )
+
+    mn_client = MemberNodeClient_2_0(base_url=properties.BASE_URL,
+                                     cert_pem_path=properties.CERT_PEM,
+                                     cert_key_path=properties.CERT_KEY,
+                                     verify_tls=properties.VERIFY_TLS,
+                                     )
 
     with open('/home/servilla/tmp/metadataChecksumRepair.txt') as f:
         lines = f.readlines()
@@ -44,12 +44,12 @@ def main():
         checksum = line[1].strip()
         print(pid,checksum)
 
-        sysmeta = gmn_client.getSystemMetadata(pid=pid)
+        sysmeta = mn_client.getSystemMetadata(pid=pid)
         print(sysmeta.checksum.value())
         sysmeta.checksum = checksum
         sysmeta.checksum.algorithm = 'SHA-1'
-        gmn_client.updateSystemMetadata(pid=pid,sysmeta=sysmeta)
-        sysmeta = gmn_client.getSystemMetadata(pid=pid)
+        mn_client.updateSystemMetadata(pid=pid,sysmeta=sysmeta)
+        sysmeta = mn_client.getSystemMetadata(pid=pid)
         print(sysmeta.checksum.value())
         print('-' * 60)
 
