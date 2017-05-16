@@ -55,3 +55,6 @@ data
 db
 archive
 *.log
+
+# Properties file
+properties.py
