@@ -37,9 +37,9 @@ def main(argv):
     Peeks at an object's system metadata
     
     Usage: 
-        chains.py file <file> [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
-        chains.py pid <pid> [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
-        chains.py -h | --help
+        peek.py file <file> [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
+        peek.py pid <pid> [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
+        peek.py -h | --help
 
     Arguments:
         pid    Pid of object to peek
@@ -98,11 +98,20 @@ def main(argv):
 
     for pid in pids:
         sm = mn_client.getSystemMetadata(pid=pid)
-        print(sm.identifier.value())
         replicas = sm.replica
+        replica_list = []
         for replica in replicas:
-            print(replica.replicaMemberNode.value())
+            replicaMemberNode = replica.replicaMemberNode.value()
+            replicationStatus = replica.replicationStatus
+            replicaVerified = str(replica.replicaVerified)
+            replica_info = '"' + replicaMemberNode + ' ' + replicationStatus + ' ' + replicaVerified + '"'
+            replica_list.append(replica_info)
 
+        print('{}'.format(sm.identifier.value()), end=', ')
+        for replica in replica_list[:-1]:
+            print('{}'.format(replica), end=', ')
+        replica = replica_list[-1:][0]
+        print('{}'.format(replica))
 
     return 0
 
