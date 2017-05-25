@@ -73,12 +73,18 @@ def main(argv):
         base_url = args['<node>']
     else:
         base_url = properties.BASE_URL
+        
     if args['--cert']:
         cert_pem_path = args['<cert>']
+        if cert_pem_path == 'None':
+            cert_pem_path = None
     else:
         cert_pem_path = properties.CERT_PEM
+
     if args['--key']:
         cert_key_path = args['<key>']
+        if cert_key_path == 'None':
+            cert_key_path = None
     else:
         cert_key_path = properties.CERT_KEY
 
