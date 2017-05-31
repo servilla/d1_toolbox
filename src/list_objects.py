@@ -19,29 +19,70 @@ logging.basicConfig(format='%(asctime)s %(levelname)s (%(name)s): %(message)s',
 
 logger = logging.getLogger('list_objects')
 
+from docopt import docopt
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
+from d1_client.mnclient_1_1 import MemberNodeClient_1_1
 from d1_client.mnclient_2_0 import MemberNodeClient_2_0
 from d1_client.iter.objectlist import ObjectListIterator
 import properties
 
 
 def main():
+    """
+    List objects at a DataONE Member Node
 
-    mn_client = MemberNodeClient_2_0(base_url=properties.BASE_URL,
-                                     cert_pem_path=properties.CERT_PEM,
-                                     cert_key_path=properties.CERT_KEY,
-                                     verify_tls=properties.VERIFY_TLS,
-                                     )
+    Usage:
+        list_objects.py [--v1] [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>]
+        list_objects.py -h | --help
 
-    objects = ObjectListIterator(client=mn_client)
-    cnt = 0
+    Options:
+        -h --help   This page
+        -n --node   Target node (either member or coordinating)
+        -c --cert   Client certificate
+        -k --key    Client certificate key
 
+    """
+    args = docopt(str(main.__doc__))
+
+    if args['--node']:
+        base_url = args['<node>']
+    else:
+        base_url = properties.BASE_URL
+
+    if args['--cert']:
+        cert_pem_path = args['<cert>']
+        if cert_pem_path == 'None':
+            cert_pem_path = None
+    else:
+        cert_pem_path = properties.CERT_PEM
+
+    if args['--key']:
+        cert_key_path = args['<key>']
+        if cert_key_path == 'None':
+            cert_key_path = None
+    else:
+        cert_key_path = properties.CERT_KEY
+
+    if args['--v1']:
+        client = MemberNodeClient_1_1(base_url=base_url,
+                                      cert_pem_path=cert_pem_path,
+                                      cert_key_path=cert_key_path,
+                                      verify_tls=properties.VERIFY_TLS,
+                                      )
+    else:
+        client = MemberNodeClient_2_0(base_url=base_url,
+                                         cert_pem_path=cert_pem_path,
+                                         cert_key_path=cert_key_path,
+                                         verify_tls=properties.VERIFY_TLS,
+                                         )
+
+
+    objects = ObjectListIterator(client=client)
     for obj in objects:
-        cnt += 1
         print('{pid}'.format(pid=obj.identifier.value()))
         
     return 0
