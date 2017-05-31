@@ -65,11 +65,11 @@ def clean_pids(pids=None, dead_pids=None):
 
 def main(argv):
     """
-    Peeks at an object's system metadata
+    Peeks at a DataONE Member Node object's system metadata
     
     Usage: 
-        peek.py file <file> [-n | --node <node>] [--v1] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
-        peek.py pid <pid> [-n | --node <node>] [--v1] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
+        peek.py pid <pid> [--v1] [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
+        peek.py file <file> [--v1] [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
         peek.py -h | --help
 
     Arguments:
