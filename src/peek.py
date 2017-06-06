@@ -70,11 +70,13 @@ def main(argv):
     Usage: 
         peek.py pid <pid> [--v1] [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
         peek.py file <file> [--v1] [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>] [-a | --attr <attr>] [--header]
+        peek.py defaults
         peek.py -h | --help
 
     Arguments:
-        pid    Pid of object to peek
-        file   File containing pid(s) (one per line) of objects to peek
+        pid      Pid of object to peek
+        file     File containing pid(s) (one per line) of objects to peek
+        defaults Print default properties to stdout
                 
     Options:
         -h --help   This page
@@ -87,6 +89,10 @@ def main(argv):
 
     """
     args = docopt(str(main.__doc__))
+
+    if args['defaults']:
+        properties.dump()
+        return 0
 
     pids = {}
     if args['pid']:
