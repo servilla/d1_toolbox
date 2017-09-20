@@ -51,11 +51,13 @@ def main(argv):
     Lists obsolescence chain of a DataONE object.
 
     Usage:
-        chains.py <pid> [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>]
+        chains.py pid <pid> [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>]
+       	chains.py defaults
         chains.py (-h | --help)
 
     Arguments:
-        pid    Persistent identifier of object
+        pid      Persistent identifier of object
+        defaults Print default properties to stdout
 
     Options:
         -h --help   This page
@@ -66,6 +68,10 @@ def main(argv):
     """
 
     args = docopt(str(main.__doc__))
+
+    if args['defaults']:
+        properties.dump()
+        return 0
 
     pid = args['<pid>']
 
