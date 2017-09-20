@@ -129,6 +129,8 @@ def main(argv):
     attributes = ()
     if args['--attr']:
         attributes = [ _.strip() for _ in args['<attr>'].split(',')]
+    else:
+        attributes = ['checksum', 'size', 'replica', 'archived']
 
     if args['--v1']:
         client = MemberNodeClient_1_1(base_url=base_url,
@@ -153,6 +155,8 @@ def main(argv):
                 pids[pid]['size'] = sm.size
             if 'replica' in attributes:
                 pids[pid]['replica'] = replicas(sm.replica)
+            if 'archived' in attributes:
+                pids[pid]['archived'] = sm.archived
         except Exception as e:
             logger.error('{pid}: {e}'.format(pid=pid, e=e))
             dead_pids.append(pid)
@@ -170,6 +174,9 @@ def main(argv):
         if 'replica' in attributes:
             replica = pids[pid]['replica']
             print('{replica}'.format(replica=replica), end=',')
+        if 'archived' in attributes:
+            archived = pids[pid]['archived']
+            print('{archived}'.format(archived=archived), end=',')
         print()
 
     return 0
