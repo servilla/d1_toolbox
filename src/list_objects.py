@@ -20,10 +20,10 @@ logging.basicConfig(format='%(asctime)s %(levelname)s (%(name)s): %(message)s',
 logger = logging.getLogger('list_objects')
 
 from docopt import docopt
-import requests
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from urllib3.exceptions import InsecureRequestWarning
+import urllib3
 
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+urllib3.disable_warnings(InsecureRequestWarning)
 
 from d1_client.mnclient_1_1 import MemberNodeClient_1_1
 from d1_client.mnclient_2_0 import MemberNodeClient_2_0
@@ -37,7 +37,11 @@ def main():
 
     Usage:
         list_objects.py [--v1] [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>]
+        list_objects.py defaults
         list_objects.py -h | --help
+
+    Arguments:
+        defaults Print default properties to stdout
 
     Options:
         -h --help   This page
@@ -47,6 +51,10 @@ def main():
 
     """
     args = docopt(str(main.__doc__))
+
+    if args['defaults']:
+        properties.dump()
+        return 0
 
     if args['--node']:
         base_url = args['<node>']
