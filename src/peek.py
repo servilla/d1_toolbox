@@ -20,7 +20,7 @@ import sys
 from d1_client.mnclient_1_1 import MemberNodeClient_1_1
 from d1_client.mnclient_2_0 import MemberNodeClient_2_0
 from docopt import docopt
-from lxml import etree
+import lxml.etree as etree
 
 import properties
 
