@@ -23,10 +23,8 @@ logging.basicConfig(format='%(asctime)s %(levelname)s (%(name)s): %(message)s',
 logger = logging.getLogger('create_object')
 
 import requests
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from docopt import docopt
 
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 from d1_client.mnclient_2_0 import MemberNodeClient_2_0
 import d1_common.types.dataoneTypes_v2_0 as dataoneTypes_v2_0
