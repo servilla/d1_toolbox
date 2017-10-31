@@ -21,6 +21,7 @@ import logging
 import daiquiri
 from d1_client.mnclient_1_1 import MemberNodeClient_1_1
 from d1_client.mnclient_2_0 import MemberNodeClient_2_0
+import d1_common.types.dataoneTypes_v2_0 as dataoneTypes_v2_0
 from docopt import docopt
 import lxml.etree as etree
 
@@ -32,9 +33,15 @@ logger = daiquiri.getLogger('poke ' + __name__)
 
 
 def mod_system_metadata(sysmeta=None):
-    logger.info(sysmeta.authoritativeMemberNode.value())
-    sysmeta.authoritativeMemberNode = 'urn:node:GLEON'
-    logger.info(sysmeta.authoritativeMemberNode.value())
+    sysmeta.obsoletedBy = 'gries.27.2'
+    #sysmeta.obsoletes = 'gries.27.2'
+    # replication_policy = dataoneTypes_v2_0.ReplicationPolicy()
+    # replication_policy.numberReplicas = 0
+    # replication_policy.replicationAllowed = False
+    # sysmeta.replicationPolicy = replication_policy
+    #sysmeta.replicationPolicy.numberReplicas=None
+    #sysmeta.replicationPolicy.replicationAllowed=False
+
     return  sysmeta
 
 
