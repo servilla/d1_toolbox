@@ -18,6 +18,7 @@ import sys
 
 from d1_client.mnclient_2_0 import MemberNodeClient_2_0
 from docopt import docopt
+import pyxb
 
 import properties
 
@@ -35,7 +36,9 @@ def main(argv):
     Peeks at an object's system metadata
 
     Usage: 
-        obsolete.py <pid> [-n | --node <node>] [-c | --cert <cert>] [-k | --key <key>] [-p | --pred <pred>] [-s | --succ <succ>]
+        obsolete.py <pid> [-n | --node <node>] [-c | --cert <cert>]
+                    [-k | --key <key>] [-p | --pred <pred>] [-s | --succ <succ>]
+                    [-v | --verbose]
         obsolete.py -h | --help
 
     Arguments:
@@ -43,11 +46,12 @@ def main(argv):
 
     Options:
         -h --help   This page
-        -n --node   Target node (either member or coordinating)
-        -c --cert   Client certificate
-        -k --key    Client certificate key
-        -p --pred   Predecessor PID that current PID obsoletes
-        -s --succ   Successor PID that current PID is obsoleted by
+        -n --node       Target node (either member or coordinating)
+        -c --cert       Client certificate
+        -k --key        Client certificate key
+        -p --pred       Predecessor PID that current PID obsoletes
+        -s --succ       Successor PID that current PID is obsoleted by
+        -v --verbose    Display before/after system metadata
 
     """
     args = docopt(str(main.__doc__))
@@ -84,6 +88,10 @@ def main(argv):
     if args['--succ']:
         succ = args['<succ>']
 
+    verbose = False
+    if args['--verbose']:
+        verbose = True
+
     mn_client = MemberNodeClient_2_0(base_url=base_url,
                                      cert_pem_path=cert_pem_path,
                                      cert_key_path=cert_key_path,
@@ -91,6 +99,11 @@ def main(argv):
                                      )
 
     sm = mn_client.getSystemMetadata(pid=pid)
+
+    if verbose:
+        print('Before:')
+        print(sm.toDOM().toprettyxml())
+
     changed = False
     if pred is not None:
         sm.obsoletes = pred
@@ -101,6 +114,10 @@ def main(argv):
 
     if changed:
         mn_client.updateSystemMetadata(pid=pid,sysmeta_pyxb=sm)
+        if verbose:
+            sm = mn_client.getSystemMetadata(pid=pid)
+            print('After:')
+            print(sm.toDOM().toprettyxml())
     else:
         logger.warning('No changes detected')
 
