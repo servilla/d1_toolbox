@@ -55,6 +55,8 @@ data
 db
 archive
 *.log
+certs
 
 # Properties file
 properties.py
+config.py
