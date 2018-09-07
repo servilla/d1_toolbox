@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+""":Mod: config.py
+
+:Synopsis:
+
+:Author:
+    servilla
+
+:Created:
+    9/6/18
+"""
+import daiquiri
+
+logger = daiquiri.getLogger('config.py: ' + __name__)
+
+
+class Config(object):
+    BASE_URL = 'BASE_URL'
+    CERT_KEY = 'CERT_KEY.pem'
+    CERT_PEM = 'CERT_PEM.pem'
+    VERIFY_TLS = True
+
+    @staticmethod
+    def dump():
+        print(Config.BASE_URL)
+        print(Config.CERT_KEY)
+        print(Config.CERT_PEM)
+        print(Config.VERIFY_TLS)
