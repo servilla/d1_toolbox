@@ -13,13 +13,29 @@
 """
 import daiquiri
 
-logger = daiquiri.getLogger('config.py: ' + __name__)
+logger = daiquiri.getLogger("config.py: " + __name__)
 
 
 class Config(object):
-    BASE_URL = 'BASE_URL'
-    CERT_KEY = 'CERT_KEY.pem'
-    CERT_PEM = 'CERT_PEM.pem'
+    CERT_PATH = "CERT_PATH"
+
+    KEYS = {
+        "LTER_S": f"{CERT_PATH}CERT_KEY.pem",
+        "LTER": f"{CERT_PATH}CERT_KEY.pem",
+        "EDI_S": f"{CERT_PATH}CERT_KEY.pem",
+        "EDI": f"{CERT_PATH}CERT_KEY.pem",
+    }
+
+    CRTS = {
+        "LTER_S": f"{CERT_PATH}CERT_PEM.pem",
+        "LTER": f"{CERT_PATH}CERT_PEM.pem",
+        "EDI_S": f"{CERT_PATH}CERT_PEM.pem",
+        "EDI": f"{CERT_PATH}CERT_PEM.pem",
+    }
+
+    BASE_URL = "BASE_URL"
+    CERT_KEY = KEYS["LTER_S"]
+    CERT_PEM = CRTS["LTER_S"]
     VERIFY_TLS = True
 
     @staticmethod
