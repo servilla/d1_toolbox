@@ -23,7 +23,7 @@ daiquiri.setup(level=logging.INFO,
                outputs=(
                    'stderr',
                    daiquiri.output.File(filename='archive_objects.log')
-                ))
+               ))
 
 logger = daiquiri.getLogger(name=f'{__name__}')
 
@@ -33,9 +33,8 @@ def archive_pid(pid: str,
                 cert_pem_path: str,
                 cert_key_path: str,
                 verify_tls: bool,
-                mn_version: str='v2',
+                mn_version: str = 'v2',
                 ):
-
     if mn_version == 'v1':
         mn_client = MemberNodeClient_1_2(base_url=base_url,
                                          cert_pem_path=cert_pem_path,
