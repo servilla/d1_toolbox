@@ -70,7 +70,7 @@ dependencies:
       - iso8601==2.1.0
       - multidict==6.7.1
       - propcache==0.4.1
-      - pyasn1==0.6.2
+      - pyasn1==0.6.3
       - pyjwt==2.12.1
       - pyparsing==3.3.2
       - pyxb-x==1.2.6.3
