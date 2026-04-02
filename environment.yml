@@ -7,8 +7,8 @@ dependencies:
   - _openmp_mutex=5.1
   - brotlicffi=1.2.0.0
   - bzip2=1.0.8
-  - ca-certificates=2025.12.2
-  - certifi=2026.01.04
+  - ca-certificates=2026.3.19
+  - certifi=2026.02.25
   - cffi=2.0.0
   - charset-normalizer=3.4.4
   - click=8.2.1
@@ -18,7 +18,7 @@ dependencies:
   - idna=3.11
   - iniconfig=2.3.0
   - ld_impl_linux-64=2.44
-  - libexpat=2.7.4
+  - libexpat=2.7.5
   - libffi=3.4.4
   - libgcc=15.2.0
   - libgcc-ng=15.2.0
@@ -32,11 +32,11 @@ dependencies:
   - lz4-c=1.9.4
   - ncurses=6.5
   - openssl=3.5.5
-  - packaging=25.0
+  - packaging=26.0
   - pip=26.0.1
   - pluggy=1.5.0
   - pthread-stubs=0.3
-  - pycparser=2.21
+  - pycparser=3.0
   - pygments=2.19.2
   - pysocks=1.7.1
   - pytest=9.0.2
@@ -44,13 +44,12 @@ dependencies:
   - python-json-logger=4.0.0
   - python_abi=3.14
   - readline=8.3
-  - requests=2.32.5
-  - setuptools=80.10.2
+  - requests=2.33.1
+  - setuptools=82.0.1
   - sqlite=3.51.2
   - tk=8.6.15
   - tzdata=2026a
   - urllib3=2.6.3
-  - wheel=0.46.3
   - xorg-libx11=1.8.12
   - xorg-libxau=1.0.12
   - xorg-libxdmcp=1.1.5
@@ -60,10 +59,10 @@ dependencies:
   - zstd=1.5.7
   - pip:
       - aiohappyeyeballs==2.6.1
-      - aiohttp==3.13.3
+      - aiohttp==3.13.5
       - aiosignal==1.4.0
-      - attrs==25.4.0
-      - cryptography==46.0.5
+      - attrs==26.1.0
+      - cryptography==46.0.6
       - dataone-common==3.5.2
       - dataone-libclient==3.5.2
       - frozenlist==1.8.0
